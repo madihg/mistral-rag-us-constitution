@@ -3,89 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAMPLE RAG CHATBOT</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Discover the US Constitution</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="chat-container">
         <div class="chat-header">
-            <h1>SAMPLE RAG CHATBOT</h1>
+            <img src="https://media.tenor.com/_31gH9b_0VsAAAAM/usa-flag-american.gif" alt="US Flag" class="flag-gif">
+            <h1>Discover the US Constitution</h1>
         </div>
         <div class="chat-messages" id="chat-messages">
-            <div class="message bot">
-                Welcome to the RAG Chatbot. I am ready to answer your questions about the text I've been trained on.
-            </div>
+            <div class="message system">Welcome! Ask me anything about the US Constitution.</div>
         </div>
         <div class="chat-input">
             <form id="chat-form">
-                <input type="text" id="user-input" placeholder="Enter your question..." required>
+                <input type="text" id="user-input" placeholder="Type your question here..." required>
                 <button type="submit">Send</button>
             </form>
         </div>
     </div>
 
     <script>
-        document.getElementById('chat-form').addEventListener('submit', async (e) => {
+        const chatMessages = document.getElementById('chat-messages');
+        const chatForm = document.getElementById('chat-form');
+        const userInput = document.getElementById('user-input');
+
+        // Function to add a message to the chat
+        function addMessage(content, className) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', className);
+            messageDiv.textContent = content;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Function to simulate bot response (replace with actual API call)
+        async function getBotResponse(userMessage) {
+            // Simulating API delay
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Simple responses for demonstration
+            const responses = {
+                "hello": "Hello! I'm here to help you learn about the US Constitution. What would you like to know?",
+                "amendments": "The US Constitution has 27 amendments. The first 10 are known as the Bill of Rights. Would you like to know about any specific amendment?",
+                "preamble": "The Preamble begins with 'We the People of the United States, in Order to form a more perfect Union...' It outlines the fundamental purposes of the Constitution.",
+                "default": "That's an interesting question about the Constitution. The document covers many topics including the structure of government, individual rights, and the amendment process. Could you be more specific about what you'd like to know?"
+            };
+
+            const lowerMessage = userMessage.toLowerCase();
+            for (const [key, value] of Object.entries(responses)) {
+                if (lowerMessage.includes(key)) {
+                    return value;
+                }
+            }
+            return responses.default;
+        }
+
+        // Handle form submission
+        chatForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const userInput = document.getElementById('user-input');
-            const question = userInput.value;
-            const submitButton = e.target.querySelector('button');
+            const message = userInput.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, 'user');
             
-            // Disable the submit button while processing
-            submitButton.disabled = true;
-            
-            // Add user message to chat
-            addMessage(question, 'user');
+            // Clear input and disable form
             userInput.value = '';
-            
+            userInput.disabled = true;
+            chatForm.querySelector('button').disabled = true;
+
             try {
-                console.log('Sending request to server...');
-                const response = await fetch('/ask', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ question: question })
-                });
-                
-                console.log('Response received:', response);
-                
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                console.log('Data received:', data);
-                
-                // Add bot response to chat
-                addMessage(data.answer, 'bot');
-                
-                // Add context if available
-                if (data.context && data.context.length > 0) {
-                    addMessage('Context used:', 'system');
-                    data.context.forEach((chunk, index) => {
-                        addMessage(`Chunk ${index + 1}: ${chunk}`, 'system');
-                    });
-                }
+                // Get bot response
+                const response = await getBotResponse(message);
+                addMessage(response, 'bot');
             } catch (error) {
-                console.error('Error details:', error);
-                addMessage(`Error: ${error.message}`, 'error');
+                addMessage('Sorry, I encountered an error. Please try again.', 'error');
             } finally {
-                // Re-enable the submit button
-                submitButton.disabled = false;
+                // Re-enable form
+                userInput.disabled = false;
+                chatForm.querySelector('button').disabled = false;
+                userInput.focus();
             }
         });
 
-        function addMessage(text, type) {
-            const messagesDiv = document.getElementById('chat-messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${type}`;
-            messageDiv.textContent = text;
-            messagesDiv.appendChild(messageDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
+        // Focus on input when page loads
+        userInput.focus();
     </script>
 </body>
-</html> 
+</html>
