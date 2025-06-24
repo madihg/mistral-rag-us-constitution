@@ -5,14 +5,14 @@
 }
 
 body {
-    font-family: "Times New Roman", Times, serif;
+    font-family: Georgia, serif;
     line-height: 1.6;
-    background-color: white;
+    background-color: #f0f0f0;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #2563eb;
+    color: #002868;
 }
 
 .chat-container {
@@ -20,72 +20,98 @@ body {
     max-width: 800px;
     height: 90vh;
     background-color: white;
-    border: 2px solid #2563eb;
+    border: 3px solid #002868;
     display: flex;
     flex-direction: column;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .chat-header {
-    padding: 20px;
-    background-color: #2563eb;
+    padding: 15px 20px;
+    background: linear-gradient(to bottom, #002868 0%, #002868 33%, white 33%, white 66%, #BF0A30 66%, #BF0A30 100%);
     color: white;
-    border-bottom: 2px solid #2563eb;
+    border-bottom: 3px solid #002868;
+    text-align: center;
+}
+
+.flag-gif {
+    width: 80px;
+    height: auto;
+    margin-bottom: 10px;
 }
 
 .chat-header h1 {
-    font-size: 1.5rem;
-    font-weight: normal;
+    font-size: 1.8rem;
+    font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    color: white;
+    background-color: #002868;
+    padding: 10px 20px;
+    display: inline-block;
+    border-radius: 5px;
 }
 
 .chat-messages {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
-    background-color: white;
+    background-color: #f8f8f8;
+    background-image: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 30px,
+            rgba(191, 10, 48, 0.03) 30px,
+            rgba(191, 10, 48, 0.03) 60px
+        );
 }
 
 .message {
     margin-bottom: 15px;
-    padding: 10px 15px;
+    padding: 12px 18px;
     max-width: 80%;
     word-wrap: break-word;
-    border: 1px solid #2563eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .message.user {
-    background-color: #2563eb;
+    background-color: #002868;
     color: white;
     margin-left: auto;
+    border: 2px solid #002868;
 }
 
 .message.bot {
     background-color: white;
-    color: #2563eb;
+    color: #002868;
     margin-right: auto;
-    border: 1px solid #2563eb;
+    border: 2px solid #BF0A30;
 }
 
 .message.system {
-    background-color: white;
-    color: #2563eb;
+    background-color: #f0f0f0;
+    color: #666;
     font-size: 0.9em;
-    border: 1px dashed #2563eb;
+    border: 2px dashed #999;
     margin: 10px auto;
     max-width: 90%;
+    text-align: center;
 }
 
 .message.error {
-    background-color: #2563eb;
+    background-color: #BF0A30;
     color: white;
     margin: 10px auto;
     max-width: 90%;
+    text-align: center;
 }
 
 .chat-input {
     padding: 20px;
-    border-top: 2px solid #2563eb;
+    border-top: 3px solid #002868;
     background-color: white;
 }
 
@@ -96,51 +122,67 @@ body {
 
 #user-input {
     flex: 1;
-    padding: 10px;
-    border: 1px solid #2563eb;
-    font-family: "Times New Roman", Times, serif;
+    padding: 12px;
+    border: 2px solid #002868;
+    font-family: Georgia, serif;
     font-size: 1rem;
     background-color: white;
+    border-radius: 5px;
+}
+
+#user-input:focus {
+    outline: none;
+    border-color: #BF0A30;
+    box-shadow: 0 0 0 3px rgba(191, 10, 48, 0.1);
 }
 
 button {
-    padding: 10px 20px;
-    background-color: #2563eb;
+    padding: 12px 24px;
+    background-color: #BF0A30;
     color: white;
-    border: 1px solid #2563eb;
+    border: 2px solid #BF0A30;
     cursor: pointer;
-    font-family: "Times New Roman", Times, serif;
+    font-family: Georgia, serif;
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 1px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: all 0.3s ease;
 }
 
 button:hover {
     background-color: white;
-    color: #2563eb;
+    color: #BF0A30;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 button:disabled {
-    background-color: #93c5fd;
+    background-color: #ccc;
+    border-color: #ccc;
     color: white;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
-/* Custom scrollbar for retro feel */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 12px;
 }
 
 ::-webkit-scrollbar-track {
     background: white;
-    border: 1px solid #2563eb;
+    border: 1px solid #002868;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #2563eb;
-    border: 1px solid #2563eb;
+    background: linear-gradient(to bottom, #002868, #BF0A30);
+    border: 1px solid #002868;
+    border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #1d4ed8;
-} 
+    background: linear-gradient(to bottom, #001847, #8B0020);
+}
